@@ -1,7 +1,7 @@
 Amazon S3 Anypoint Connector Release Notes
 ==========================================
 
-Date: 10-Mar-2015
+Date: 10-Jun-2015
 
 Version: 3.0.0
 
@@ -41,34 +41,38 @@ Supported Operations:
 New Features and Functionality
 ------------------------------
 
-Updated the Devkit & Tested for 3.6.0 release.
+Updated the Devkit & Tested for 3.6.1 release.
 
-Updated the AWS Java SDK from 1.7.13 to 1.9.19.
+Updated the AWS Java SDK from 1.7.13 to 1.9.30.
 
 Added Get Bucket Location operation.
 
 Updated the test cases and demo project.
 
 Previous Release
-----------------
+------------------------------
 
-Updated the Devkit & Tested for 3.5.1 release.
+- Upgraded Anypoint Devkit to 3.5.3 release.
 
-Updated the AWS Java SDK from 1.7.2 to 1.7.13.
+- Added support for 3.7.0 Mule Runtime.
 
-Updated the demo project to support the latest 3.5.1 Anypoint Studio.
+- Updated the Devkit & Tested for 3.5.1 release.
 
-Updated S3Connector.java for the latest versions (3.5.0) of DevKit Annotations (e.g. removing @Default @Optional)
+- Updated the AWS Java SDK from 1.7.2 to 1.7.13.
 
-Added Studio Interoperabilty Tests.
+- Updated the demo project to support the latest 3.5.1 Anypoint Studio.
 
-Fixed an issue where uploading an InputStream object without specifying content length would create a temporary file that was never deleted.
+- Updated S3Connector.java for the latest versions (3.5.0) of DevKit Annotations (e.g. removing @Default @Optional)
 
-Added all optional parameters to `listObjects` and `listObjectVersions`.
+- Added Studio Interoperabilty Tests.
 
-Updated directory structure and documentation according to certification guidelines.
+- Fixed an issue where uploading an InputStream object without specifying content length would create a temporary file that was never deleted.
 
-Updated [AWS SDK for Java](http://aws.amazon.com/sdkforjava/) from [1.4.7](http://aws.amazon.com/releasenotes/Java/7233847602537543) to [1.7.2](http://aws.amazon.com/releasenotes/Java/3795911094379719). The relevant changes from this update are:
+- Added all optional parameters to `listObjects` and `listObjectVersions`.
+
+- Updated directory structure and documentation according to certification guidelines.
+
+- Updated [AWS SDK for Java](http://aws.amazon.com/sdkforjava/) from [1.4.7](http://aws.amazon.com/releasenotes/Java/7233847602537543) to [1.7.2](http://aws.amazon.com/releasenotes/Java/3795911094379719). The relevant changes from this update are:
 
 * The `S3Object` now implements the `Closable` interface, to make it easier to handle HTTP connection resources.
 * The new SDK version for Amazon Simple Storage Service will do a length validation on `GetObject` method when users finish reading the input stream.
