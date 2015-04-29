@@ -5,6 +5,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
+    <import resource="ConnectorTestCaseSpringBeans.xml"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>${AUTOMATION_CREDENTIALS}</value>
+        </property>
+    </bean>
 
     <!--  usermetadata key values should be lowercase  -->
 
@@ -22,17 +29,13 @@
         </constructor-arg>
     </bean>
 
-    <bean id="randomString" class="org.mule.modules.tests.ConnectorTestUtils"
-          factory-method="generateRandomShortString" scope="prototype"/>
-
-
     <!-- create-bucket -->
 
     <util:map id="createBucketTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketName" value-ref="randomString"/>
-        <entry key="region" value="AP_SYDNEY"/>
-        <entry key="acl" value="PUBLIC_READ"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
+        <entry key="region" value="US_STANDARD"/>
+        <entry key="acl" value="BUCKET_OWNER_FULL_CONTROL"/>
     </util:map>
 
     <!-- delete-bucket -->
@@ -49,7 +52,7 @@
 
     <util:map id="deleteBucketTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketName" value-ref="randomString"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
         <entry key="key" value="byteArrayKey"/>
         <entry key="userMetadata" value-ref="deleteBucketUserMetadata"/>
     </util:map>
@@ -58,7 +61,7 @@
 
     <util:map id="bucketPolicyTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketName" value-ref="randomString"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
         <entry key="policyTemplate"
                value="{&quot;Version&quot;:&quot;2008-10-17&quot;,&quot;Statement&quot;:[{&quot;Sid&quot;:&quot;AddPerm&quot;,&quot;Effect&quot;:&quot;Allow&quot;,&quot;Principal&quot;:{&quot;AWS&quot;:&quot;*&quot;},&quot;Action&quot;:&quot;s3:GetObject&quot;,&quot;Resource&quot;:&quot;arn:aws:s3:::test_bucket_name/*&quot;}]}"/>
     </util:map>
@@ -67,7 +70,7 @@
 
     <util:map id="bucketWebsiteConfigurationTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketName" value-ref="randomString"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
         <entry key="bucketWebsiteConfiguration" value-ref="bucketWebsiteConfigurationRef"/>
     </util:map>
 
@@ -79,7 +82,7 @@
 
     <util:map id="listBucketsTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketAmount" value="3"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
     </util:map>
 
     <!-- create-object -->
@@ -229,8 +232,8 @@
     <!-- get-bucket-location  -->
     <util:map id="getBucketLocationTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketName" value-ref="randomString"/>
-        <entry key="region" value="AP_SYDNEY"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
+        <entry key="region" value="US_STANDARD"/>
         <entry key="acl" value="PUBLIC_READ"/>
     </util:map>
 
@@ -469,7 +472,7 @@
 
     <util:map id="copyObjectTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketName" value-ref="randomString"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
     </util:map>
 
     <!-- copy-object input-stream -->
@@ -555,7 +558,7 @@
 
     <util:map id="listObjectsTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketName" value-ref="randomString"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
         <entry key="prefix" value="prefix/"/>
         <entry key="expectedResults" value="2"/>
         <entry key="marker" value="!"/>
@@ -623,7 +626,7 @@
 
     <util:map id="listObjectVersionsTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
-        <entry key="bucketName" value-ref="randomString"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
         <entry key="prefix" value="prefix/"/>
         <entry key="delimiter" value="/"/>
         <entry key="maxResults" value="3"/>
@@ -785,7 +788,7 @@
     <util:map id="bucketVersioningConfigurationTestData" map-class="java.util.HashMap"
               key-type="java.lang.String" value-type="java.lang.Object" scope="prototype">
         <entry key="key" value="byteArrayKey"/>
-        <entry key="bucketName" value-ref="randomString"/>
+        <entry key="bucketName" value="${s3.bucketName}"/>
         <entry key="userMetadata" value-ref="bucketVersioningConfigurationUserMetadata"/>
     </util:map>
 

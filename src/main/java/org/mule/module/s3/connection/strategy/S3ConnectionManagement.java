@@ -8,6 +8,7 @@ package org.mule.module.s3.connection.strategy;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.ClientConfiguration;
+import com.amazonaws.Protocol;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -17,6 +18,7 @@ import org.mule.api.ConnectionException;
 import org.mule.api.ConnectionExceptionCode;
 import org.mule.api.annotations.*;
 import org.mule.api.annotations.components.ConnectionManagement;
+import org.mule.api.annotations.display.Placement;
 import org.mule.api.annotations.param.ConnectionKey;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
@@ -24,33 +26,64 @@ import org.mule.module.s3.simpleapi.SimpleAmazonS3;
 import org.mule.module.s3.simpleapi.SimpleAmazonS3AmazonDevKitImpl;
 
 @ReconnectOn(exceptions = {AmazonClientException.class})
-@ConnectionManagement(friendlyName = "Configuration")
+@ConnectionManagement(friendlyName = "Configuration Management")
 public class S3ConnectionManagement {
+
+    /**
+     * The optional communication protocol to use when sending requests to AWS.
+     * Communication over HTTPS is the default
+     */
+    @Configurable
+    @Optional
+    private Protocol protocol;
+
+    /**
+     * The optional proxy port
+     */
+    @Configurable
+    @Optional
+    @Placement(group = "Proxy Settings")
+    private String proxyHost;
+
+    /**
+     * The optional proxy port
+     */
+    @Configurable
+    @Optional
+    @Placement(group = "Proxy Settings")
+    private Integer proxyPort;
 
     /**
      * The optional proxy username
      */
     @Configurable
     @Optional
+    @Placement(group = "Proxy Settings")
     private String proxyUsername;
+
     /**
-     * The optional  proxy port
+     * The optional proxy password
      */
     @Configurable
     @Optional
-    private Integer proxyPort;
-    /**
-     * The optional  proxy password
-     */
-    @Configurable
-    @Optional
+    @Placement(group = "Proxy Settings")
     private String proxyPassword;
+
     /**
-     * The optional  proxy port
+     * The optional proxy domain
      */
     @Configurable
     @Optional
-    private String proxyHost;
+    @Placement(group = "Proxy Settings")
+    private String proxyDomain;
+
+    /**
+     * The optional proxy workstation
+     */
+    @Configurable
+    @Optional
+    @Placement(group = "Proxy Settings")
+    private String proxyWorkstation;
 
     /**
      * The amount of time to wait (in milliseconds) for data to be transferred
@@ -69,6 +102,13 @@ public class S3ConnectionManagement {
     @Configurable
     @Default("50000")
     private Integer connectionTimeout;
+
+    /**
+     * Sets the maximum number of allowed open HTTP connections.
+     */
+    @Configurable
+    @Default("50")
+    private Integer maxConnections;
 
     private SimpleAmazonS3 client;
 
@@ -118,17 +158,27 @@ public class S3ConnectionManagement {
      */
     private AmazonS3 createAmazonS3(String accessKey, String secretKey) {
         ClientConfiguration clientConfig = new ClientConfiguration();
-        if (getProxyUsername() != null) {
+
+        if (StringUtils.isNotBlank(getProxyUsername())) {
             clientConfig.setProxyUsername(getProxyUsername());
         }
         if (getProxyPort() != null) {
             clientConfig.setProxyPort(proxyPort);
         }
-        if (getProxyPassword() != null) {
+        if (StringUtils.isNotBlank(getProxyPassword())) {
             clientConfig.setProxyPassword(getProxyPassword());
         }
-        if (getProxyHost() != null) {
+        if (StringUtils.isNotBlank(getProxyHost())) {
             clientConfig.setProxyHost(getProxyHost());
+        }
+        if (StringUtils.isNotBlank(getProxyDomain())) {
+            clientConfig.setProxyDomain(getProxyDomain());
+        }
+        if (StringUtils.isNotBlank(getProxyWorkstation())) {
+            clientConfig.setProxyWorkstation(getProxyWorkstation());
+        }
+        if (getProtocol() != null) {
+            clientConfig.setProtocol(getProtocol());
         }
         if (getConnectionTimeout() != null) {
             clientConfig.setConnectionTimeout(getConnectionTimeout());
@@ -137,8 +187,13 @@ public class S3ConnectionManagement {
             clientConfig.setSocketTimeout(getSocketTimeout());
         }
 
-        return new AmazonS3Client(createCredentials(accessKey, secretKey),
+        if (getMaxConnections() != null) {
+            clientConfig.setMaxConnections(getMaxConnections());
+        }
+
+        AmazonS3Client amazonS3Client = new AmazonS3Client(createCredentials(accessKey, secretKey),
                 clientConfig);
+        return amazonS3Client;
     }
 
     private AWSCredentials createCredentials(String accessKey, String secretKey) {
@@ -202,5 +257,37 @@ public class S3ConnectionManagement {
 
     public void setClient(SimpleAmazonS3 client) {
         this.client = client;
+    }
+
+    public Protocol getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(Protocol protocol) {
+        this.protocol = protocol;
+    }
+
+    public String getProxyDomain() {
+        return proxyDomain;
+    }
+
+    public void setProxyDomain(String proxyDomain) {
+        this.proxyDomain = proxyDomain;
+    }
+
+    public String getProxyWorkstation() {
+        return proxyWorkstation;
+    }
+
+    public void setProxyWorkstation(String proxyWorkstation) {
+        this.proxyWorkstation = proxyWorkstation;
+    }
+
+    public Integer getMaxConnections() {
+        return maxConnections;
+    }
+
+    public void setMaxConnections(Integer maxConnections) {
+        this.maxConnections = maxConnections;
     }
 }
