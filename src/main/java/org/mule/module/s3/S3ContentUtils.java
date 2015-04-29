@@ -79,8 +79,10 @@ public final class S3ContentUtils {
     }
 
     private static S3ObjectContent createContent(String contentMd5, String stringContent) {
-        return new InputStreamS3ObjectContent(new ByteArrayInputStream(stringContent.getBytes(Charset.defaultCharset())),
-                (long) stringContent.length(), contentMd5);
+        byte[] bytesContent = stringContent.getBytes(Charset.defaultCharset());
+        return new InputStreamS3ObjectContent(new ByteArrayInputStream(bytesContent),
+                (long) bytesContent.length, contentMd5);
+
     }
 
     private static S3ObjectContent createContent(InputStream content, Long contentLength, String contentMd5) {

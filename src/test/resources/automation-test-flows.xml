@@ -9,7 +9,7 @@
         xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
 
-    <context:property-placeholder location="${S3_CREDENTIALS}"/>
+    <context:property-placeholder location="${AUTOMATION_CREDENTIALS}"/>
 
     <s3:config name="Amazon_S3" accessKey="${s3.accessKey}" secretKey="${s3.secretKey}" doc:name="Amazon S3">
         <s3:connection-pooling-profile initialisationPolicy="INITIALISE_ONE" exhaustedAction="WHEN_EXHAUSTED_GROW"/>
@@ -25,7 +25,7 @@ http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/cu
     </flow>
 
     <flow name="delete-bucket" doc:name="delete-bucket">
-        <s3:delete-bucket config-ref="Amazon_S3" bucketName="#[flowVars.bucketName]" doc:name="Amazon S3"/>
+        <s3:delete-bucket config-ref="Amazon_S3" bucketName="#[flowVars.bucketName]" force="true" doc:name="Amazon S3"/>
     </flow>
 
     <flow name="delete-bucket-optional-attributes" doc:name="delete-bucket-optional-attributes">

@@ -17,8 +17,7 @@ import org.mule.module.s3.automation.SmokeTests;
 import org.mule.module.s3.simpleapi.Region;
 import org.mule.modules.tests.ConnectorTestUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class GetBucketLocationTestCases extends S3TestParent {
@@ -35,10 +34,9 @@ public class GetBucketLocationTestCases extends S3TestParent {
     @Test
     public void testGetBucketLocation() {
         try {
-            
             String bucketLocation = runFlowAndGetPayload("get-bucket-location");
             Region region = Region.valueOf(getTestRunMessageValue("region").toString());
-            assertEquals(bucketLocation, region.toS3Equivalent().getFirstRegionId());
+            assertTrue(region.name().startsWith(bucketLocation));
 
         } catch (Exception e) {
             fail(ConnectorTestUtils.getStackTrace(e));
