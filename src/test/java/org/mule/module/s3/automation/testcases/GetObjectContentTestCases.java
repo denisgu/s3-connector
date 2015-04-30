@@ -121,7 +121,7 @@ public class GetObjectContentTestCases extends S3TestParent {
 
     }
 
-    @Category({RegressionTests.class})
+    @Category({SmokeTests.class})
     @Test
     public void testGetByteArrayObjectContentOptionalAttributes() {
 
@@ -136,7 +136,7 @@ public class GetObjectContentTestCases extends S3TestParent {
     }
 
 
-    @Category({RegressionTests.class})
+    @Category({SmokeTests.class})
     @Test
     public void testGetFileObjectContentOptionalAttributes() {
 
@@ -163,7 +163,7 @@ public class GetObjectContentTestCases extends S3TestParent {
 
     }
 
-    @Category({RegressionTests.class})
+    @Category({SmokeTests.class})
     @Test
     public void testGetInputStreamObjectContentOptionalAttributes() {
 
@@ -193,7 +193,7 @@ public class GetObjectContentTestCases extends S3TestParent {
         }
     }
 
-    @Category({RegressionTests.class})
+    @Category({SmokeTests.class})
     @Test
     public void testGetStringObjectContentOptionalAttributes() {
 
